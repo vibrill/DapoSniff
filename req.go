@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	path   = "token.txt"
+	path   = "token"
 	tolist []string
 )
 
@@ -97,7 +97,7 @@ func getdata(perintah string) (text string) {
 }
 
 func printdata(perintah string) {
-	err := ioutil.WriteFile(perintah+".json", []byte(getdata(perintah)), 0777)
+	err := ioutil.WriteFile("json\\"+perintah+".json", []byte(getdata(perintah)), 0777)
 	if err != nil {
 		log.Fatal(err)
 	}
