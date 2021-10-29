@@ -110,7 +110,7 @@ func main() {
 	printdata(indikator[0])
 	printdata(indikator[1])
 	printdata(indikator[2])
-	println("Data berikut ini telah selesai dibuat:\n1. getGtk.json\n2. getPesertaDidik.json\n3. getRombonganBelajar.json")
+	println("Data berikut ini telah selesai dibuat dan diletakan dalam folder json:\n1. getGtk.json\n2. getPesertaDidik.json\n3. getRombonganBelajar.json")
 	println("silahkan upload tiga file tersebut pada bot Telegram")
 	time.Sleep(5 * time.Second)
 	os.Exit(0)
