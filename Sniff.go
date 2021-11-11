@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"dapofiles"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -112,6 +113,12 @@ func main() {
 	printdata(indikator[2])
 	println("Data berikut ini telah selesai dibuat dan diletakan dalam folder json:\n1. getGtk.json\n2. getPesertaDidik.json\n3. getRombonganBelajar.json")
 	println("silahkan upload tiga file tersebut pada bot Telegram")
+	println("memeriksa folder download")
+	siswa, guru, tendik := dapofiles.Cek() //cekdapo(downfiles.DownloadFiles())
+	fmt.Println("ditemukan file siswa terbaru :\n", siswa)
+	fmt.Println("ditemukan file guru terbaru :\n", guru)
+	fmt.Println("ditemukan file tendik terbaru :\n", tendik)
 	time.Sleep(5 * time.Second)
 	os.Exit(0)
+
 }
