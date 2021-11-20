@@ -21,6 +21,15 @@ var (
 )
 
 const namadb = "sekolah.db"
+const header = (`╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╭━╮╱╭━╮` + "\n" +
+	`╰╮╭╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╱╱╱┃╭╯╱┃╭╯` + "\n" +
+	`╱┃┃┃┃╭━━╮╭━━╮╭━━╮┃╰━━╮╭━╮╱╭╮╭╯╰╮╭╯╰╮` + "\n" +
+	`╱┃┃┃┃┃╭╮┃┃╭╮┃┃╭╮┃╰━━╮┃┃╭╮╮┣┫╰╮╭╯╰╮╭╯` + "\n" +
+	`╭╯╰╯┃┃╭╮┃┃╰╯┃┃╰╯┃┃╰━╯┃┃┃┃┃┃┃╱┃┃╱╱┃┃` + "\n" +
+	`╰━━━╯╰╯╰╯┃╭━╯╰━━╯╰━━━╯╰╯╰╯╰╯╱╰╯╱╱╰╯` + "\n" +
+	`╱╱╱╱╱╱╱╱╱┃┃` + "\n" +
+	`╱╱╱╱╱╱╱╱╱╰╯` + "\n" +
+	`Created by : Vebril OPS Santuy`)
 
 func clear() {
 	fmt.Print("\033[H\033[2J")
@@ -136,8 +145,10 @@ func main() {
 }
 
 func utama() {
-	println("mengakses webserver dapodik...")
+	println("\n" + header)
 	println("==============================================\n")
+	println("mengakses webserver dapodik...\n")
+
 	db.CreateDB(namadb)
 	lib.CreateAllTabble(namadb)
 	indikator := [3]string{"getGtk", "getRombonganBelajar", "getPesertaDidik"}
@@ -160,7 +171,7 @@ func utama() {
 	println("==============================================\n")
 	fmt.Println("Silahkan upload database ", namadb, "pada Skolidbot")
 	fmt.Println("Lokasi database berada pada Desktop/DapoSniff/", namadb)
-	fmt.Println("Tekan sembarang tombol untuk mengakhiri proses...")
+	fmt.Println("Tekan tombol <Enter> untuk mengakhiri proses...")
 	fmt.Scanln()
 	os.Exit(0)
 }
