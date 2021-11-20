@@ -2,20 +2,26 @@ package main
 
 import (
 	"bufio"
+	cd "cleandapox"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	js "request/lib"
 	"time"
+	db "xlstosqlite"
 
 	"dapofiles" // "github.com/vibrill/dapofiles"
 )
 
 var (
-	path   = "token"
-	tolist []string
+	path                           = "token"
+	tolist                         []string
+	dataGTK, dataRombel, dataSiswa string
 )
+
+const namadb = "sekolah.db"
 
 func getdatanpsn() (a string) {
 	fmt.Println("Masukkan npsn sekolah Anda: ")
@@ -81,8 +87,10 @@ func getdata(perintah string) (text string) {
 	}
 
 	req.Header.Add("Authorization", bearer)
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
+
 	if err != nil {
 		log.Println("Error on response.\n[ERROR] -", err)
 	}
@@ -92,8 +100,20 @@ func getdata(perintah string) (text string) {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
+
 	text = string([]byte(body))
 	//log.Println(text)
+	if perintah == "getGtk" {
+		dataGTK = text
+		js.JsonPTKtoDB(namadb, dataGTK)
+	}
+	if perintah == "getRombonganBelajar" {
+		dataRombel = text
+	}
+	if perintah == "getPesertaDidik" {
+		dataSiswa = text
+		js.JsonSiswatoDB(namadb, dataSiswa)
+	}
 	return text
 
 }
@@ -107,19 +127,20 @@ func printdata(perintah string) {
 }
 
 func main() {
-	println("mohon tunggu, sistem sedang mengakses dapodik")
+	db.CreateDB(namadb)
+	js.CreateAllTabble(namadb)
+	println("mohon tunggu, sistem sedang mengakses webserver dapodik")
 	indikator := [3]string{"getGtk", "getRombonganBelajar", "getPesertaDidik"}
 	printdata(indikator[0])
 	printdata(indikator[1])
 	printdata(indikator[2])
-	println("Data berikut ini telah selesai dibuat dan diletakan dalam folder json:\n1. getGtk.json\n2. getPesertaDidik.json\n3. getRombonganBelajar.json")
-	println("silahkan upload tiga file tersebut pada bot Telegram")
-	println("memeriksa folder download")
 	siswa, guru, tendik := dapofiles.Cek() //cekdapo(downfiles.DownloadFiles())
 	fmt.Println("ditemukan file siswa terbaru :\n", siswa)
 	fmt.Println("ditemukan file guru terbaru :\n", guru)
 	fmt.Println("ditemukan file tendik terbaru :\n", tendik)
+	cd.Proses()
+	db.Proses(namadb)
+
 	time.Sleep(5 * time.Second)
 	os.Exit(0)
-
 }
