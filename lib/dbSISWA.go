@@ -3,6 +3,7 @@ package request
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -131,13 +132,13 @@ func createTableSiswa(namadb string) {
 		"KurikulumID"           TEXT,
 		"KurikulumIDStr"        TEXT);`
 
-	//log.Println(text)
+	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("keempat" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	log.Println("Tabel siswa telah dibuat")
+	fmt.Println("Tabel SISWAWEB telah dibuat")
 }
 
 func formatext(a string) (b string) {
@@ -243,5 +244,4 @@ func JsonSiswatoDB(namadb, js string) {
 			log.Fatalln(err.Error())
 		}
 	}
-	println("one")
 }

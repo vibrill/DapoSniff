@@ -8,8 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	js "request/lib"
-	"time"
+	lib "request/lib"
 	db "xlstosqlite"
 
 	"dapofiles" // "github.com/vibrill/dapofiles"
@@ -23,9 +22,15 @@ var (
 
 const namadb = "sekolah.db"
 
+func clear() {
+	fmt.Print("\033[H\033[2J")
+
+}
+
 func getdatanpsn() (a string) {
 	fmt.Println("Masukkan npsn sekolah Anda: ")
 	fmt.Scan(&a)
+	clear()
 	//fmt.Println(a)
 	return a
 }
@@ -33,6 +38,7 @@ func getdatanpsn() (a string) {
 func getdatatoken() (b string) {
 	fmt.Println("Masukkan token sekolah Anda: ")
 	fmt.Scan(&b)
+	clear()
 	//fmt.Println(b)
 	return b
 }
@@ -57,10 +63,7 @@ func gettoken() (npsn, token string) {
 	file, err := os.Open(path)
 	if err != nil {
 		writext()
-		fmt.Println("akun telah disimpan")
-		fmt.Println("mohon mulai ulang program untuk menjalankan program dengan akun tersebut")
-		time.Sleep(3 * time.Second)
-		os.Exit(0)
+		return "", ""
 	}
 	defer file.Close()
 
@@ -105,14 +108,14 @@ func getdata(perintah string) (text string) {
 	//log.Println(text)
 	if perintah == "getGtk" {
 		dataGTK = text
-		js.JsonPTKtoDB(namadb, dataGTK)
+		lib.JsonPTKtoDB(namadb, dataGTK)
 	}
 	if perintah == "getRombonganBelajar" {
 		dataRombel = text
 	}
 	if perintah == "getPesertaDidik" {
 		dataSiswa = text
-		js.JsonSiswatoDB(namadb, dataSiswa)
+		lib.JsonSiswatoDB(namadb, dataSiswa)
 	}
 	return text
 
@@ -127,20 +130,37 @@ func printdata(perintah string) {
 }
 
 func main() {
+	clear()
+	gettoken() //cek keberadaan file token
+	utama()
+}
+
+func utama() {
+	println("mengakses webserver dapodik...")
+	println("==============================================\n")
 	db.CreateDB(namadb)
-	js.CreateAllTabble(namadb)
-	println("mohon tunggu, sistem sedang mengakses webserver dapodik")
+	lib.CreateAllTabble(namadb)
 	indikator := [3]string{"getGtk", "getRombonganBelajar", "getPesertaDidik"}
 	printdata(indikator[0])
 	printdata(indikator[1])
 	printdata(indikator[2])
 	siswa, guru, tendik := dapofiles.Cek() //cekdapo(downfiles.DownloadFiles())
-	fmt.Println("ditemukan file siswa terbaru :\n", siswa)
-	fmt.Println("ditemukan file guru terbaru :\n", guru)
-	fmt.Println("ditemukan file tendik terbaru :\n", tendik)
+
+	println("==============================================\n")
+	fmt.Println("ditemukan file dapodik pada folder Download  : ")
+	fmt.Println("File siswa didownload pada tanggal : ", siswa[len(siswa)-24:len(siswa)-14])
+	fmt.Println("File guru didownload pada tanggal  : ", guru[len(guru)-24:len(guru)-14])
+	fmt.Println("File tendik didownload pada tanggal : ", tendik[len(tendik)-24:len(tendik)-14])
+
+	println("==============================================\n")
 	cd.Proses()
 	db.Proses(namadb)
+	lib.CopyFile(namadb)
 
-	time.Sleep(5 * time.Second)
+	println("==============================================\n")
+	fmt.Println("Silahkan upload database ", namadb, "pada Skolidbot")
+	fmt.Println("Lokasi database berada pada Desktop/DapoSniff/", namadb)
+	fmt.Println("Tekan sembarang tombol untuk mengakhiri proses...")
+	fmt.Scanln()
 	os.Exit(0)
 }

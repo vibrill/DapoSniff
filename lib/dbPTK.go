@@ -3,6 +3,7 @@ package request
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -132,13 +133,13 @@ func createTableRiwayatKepangkatanPTK(namadb string) {
 		"MasaKerjaGolBulan"    TEXT,
 		"PangkatGolonganIDStr" TEXT
 	);`
-	//log.Println(text)
+	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("create Table RWPANGKATWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	log.Println("Tabel RWPANGKATWEB telah dibuat")
+	fmt.Println("Tabel RWPANGKATWEB telah dibuat")
 }
 
 func createTableRiwayatPendidikanPTK(namadb string) {
@@ -162,13 +163,13 @@ func createTableRiwayatPendidikanPTK(namadb string) {
 		"JenjangPendidikanIDStr"    TEXT,
 		"GelarAkademikIDStr"        TEXT);`
 
-	//log.Println(text)
+	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("create Table RWPENDIDIKANWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	log.Println("Tabel RWPENDIDIKANWEB telah dibuat")
+	fmt.Println("Tabel RWPENDIDIKANWEB telah dibuat")
 }
 
 func createTablePTK(namadb string) {
@@ -196,13 +197,13 @@ func createTablePTK(namadb string) {
 		"PendidikanTerakhir"        TEXT,
 		"BidangStudiTerakhir"       TEXT,
 		"PangkatGolonganTerakhir"   TEXT);`
-	//log.Println(text)
+	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("createTablePTK ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	log.Println("Tabel PTK telah dibuat")
+	fmt.Println("Tabel PTKWEB telah dibuat")
 }
 
 func JsonPTKtoDB(namadb, js string) {
@@ -220,7 +221,7 @@ func JsonPTKtoDB(namadb, js string) {
 	defer db.Close()                          // Defer Closing the database
 
 	countPTK := data.Results
-	println("jumlah data PTK ", countPTK)
+	//println(countPTK, "PTK ditemukan")
 
 	for i := 0; i < countPTK; i++ {
 		//data setiap row
@@ -354,6 +355,5 @@ func JsonPTKtoDB(namadb, js string) {
 				log.Fatalln(err.Error())
 			}
 		}
-		println("data ke ", i, "printed")
 	}
 }
