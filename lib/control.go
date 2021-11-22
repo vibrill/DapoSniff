@@ -13,6 +13,10 @@ func CreateAllTabble(namadb string) {
 	createTableRiwayatKepangkatanPTK(namadb)
 	createTableRiwayatPendidikanPTK(namadb)
 	createTableSiswa(namadb)
+	createTabelRombel(namadb)
+	createTabelAnggotaRombel(namadb)
+	createTablePembelajaran(namadb)
+	println("Tabel data telah dibuat...")
 }
 
 func CopyFile(namadb string) { //old  dan new harus path file

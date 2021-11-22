@@ -3,7 +3,6 @@ package request
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -139,7 +138,7 @@ func createTableRiwayatKepangkatanPTK(namadb string) {
 		log.Fatal("create Table RWPANGKATWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	fmt.Println("Tabel RWPANGKATWEB telah dibuat")
+	//fmt.Println("Tabel RWPANGKATWEB telah dibuat")
 }
 
 func createTableRiwayatPendidikanPTK(namadb string) {
@@ -169,7 +168,7 @@ func createTableRiwayatPendidikanPTK(namadb string) {
 		log.Fatal("create Table RWPENDIDIKANWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	fmt.Println("Tabel RWPENDIDIKANWEB telah dibuat")
+	//fmt.Println("Tabel RWPENDIDIKANWEB telah dibuat")
 }
 
 func createTablePTK(namadb string) {
@@ -203,7 +202,7 @@ func createTablePTK(namadb string) {
 		log.Fatal("createTablePTK ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	fmt.Println("Tabel PTKWEB telah dibuat")
+	//fmt.Println("Tabel PTKWEB telah dibuat")
 }
 
 func JsonPTKtoDB(namadb, js string) {

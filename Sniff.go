@@ -20,26 +20,14 @@ var (
 	dataGTK, dataRombel, dataSiswa string
 )
 
+var scramble string = ".W3.{aC.9@n.Pr7.o-.le.W.F8.a.)..{Ct./._.te..)VLNd.@.35. k33C.sbb..<9.y....UW gPSE.d:u.yFk. 3.uR-bV..chBN-ld.B|.B.@..}8ri2k+z.i.v..C<l.=#.q,l.9#c.8ia.Hn.Vars^..!n}.z.{.t_..(WM AP$!2.O/@l.|YP....S!SFHEURW .qE_DkS..fd..a.6j.&Hn97..5.tF.Nu.$u6(...7y"
+
 const namadb = "sekolah.db"
-const header = (`╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╭━╮╱╭━╮` + "\n" +
-	`╰╮╭╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╱╱╱┃╭╯╱┃╭╯` + "\n" +
-	`╱┃┃┃┃╭━━╮╭━━╮╭━━╮┃╰━━╮╭━╮╱╭╮╭╯╰╮╭╯╰╮` + "\n" +
-	`╱┃┃┃┃┃╭╮┃┃╭╮┃┃╭╮┃╰━━╮┃┃╭╮╮┣┫╰╮╭╯╰╮╭╯` + "\n" +
-	`╭╯╰╯┃┃╭╮┃┃╰╯┃┃╰╯┃┃╰━╯┃┃┃┃┃┃┃╱┃┃╱╱┃┃` + "\n" +
-	`╰━━━╯╰╯╰╯┃╭━╯╰━━╯╰━━━╯╰╯╰╯╰╯╱╰╯╱╱╰╯` + "\n" +
-	`╱╱╱╱╱╱╱╱╱┃┃` + "\n" +
-	`╱╱╱╱╱╱╱╱╱╰╯` + "\n" +
-	`Created by : Vebril OPS Santuy`)
-
-func clear() {
-	fmt.Print("\033[H\033[2J")
-
-}
+const identitas = `Created by : V-Brilliant OPS Santuy`
 
 func getdatanpsn() (a string) {
 	fmt.Println("Masukkan npsn sekolah Anda: ")
 	fmt.Scan(&a)
-	clear()
 	//fmt.Println(a)
 	return a
 }
@@ -47,7 +35,6 @@ func getdatanpsn() (a string) {
 func getdatatoken() (b string) {
 	fmt.Println("Masukkan token sekolah Anda: ")
 	fmt.Scan(&b)
-	clear()
 	//fmt.Println(b)
 	return b
 }
@@ -121,6 +108,7 @@ func getdata(perintah string) (text string) {
 	}
 	if perintah == "getRombonganBelajar" {
 		dataRombel = text
+		lib.JsonRombelToDB(namadb, dataRombel)
 	}
 	if perintah == "getPesertaDidik" {
 		dataSiswa = text
@@ -138,40 +126,59 @@ func printdata(perintah string) {
 
 }
 
+func cekId() (text string) {
+	var idscram string
+	for i := 0; i <= len(scramble); i++ {
+		if (i+1)%7 == 0 && i != 0 {
+			idscram = idscram + scramble[i:i+1]
+		}
+	}
+	text = idscram
+	return text
+}
+
 func main() {
-	clear()
 	gettoken() //cek keberadaan file token
 	utama()
 }
 
 func utama() {
-	println("\n" + header)
-	println("==============================================\n")
-	println("mengakses webserver dapodik...\n")
+	lib.Artheadline()
+	println(cekId())
+	if cekId() == identitas {
+		println("==============================================")
+		println("mengakses webserver dapodik...")
 
-	db.CreateDB(namadb)
-	lib.CreateAllTabble(namadb)
-	indikator := [3]string{"getGtk", "getRombonganBelajar", "getPesertaDidik"}
-	printdata(indikator[0])
-	printdata(indikator[1])
-	printdata(indikator[2])
-	siswa, guru, tendik := dapofiles.Cek() //cekdapo(downfiles.DownloadFiles())
+		db.CreateDB(namadb)
+		lib.CreateAllTabble(namadb)
+		indikator := [3]string{"getGtk", "getRombonganBelajar", "getPesertaDidik"}
+		printdata(indikator[0])
+		printdata(indikator[1])
+		printdata(indikator[2])
+		siswa, guru, tendik := dapofiles.Cek() //cekdapo(downfiles.DownloadFiles())
 
-	println("==============================================\n")
-	fmt.Println("ditemukan file dapodik pada folder Download  : ")
-	fmt.Println("File siswa didownload pada tanggal : ", siswa[len(siswa)-24:len(siswa)-14])
-	fmt.Println("File guru didownload pada tanggal  : ", guru[len(guru)-24:len(guru)-14])
-	fmt.Println("File tendik didownload pada tanggal : ", tendik[len(tendik)-24:len(tendik)-14])
+		println("==============================================")
+		fmt.Println("ditemukan file dapodik pada folder Download  : ")
+		fmt.Println("File siswa didownload pada tanggal : ", siswa[len(siswa)-24:len(siswa)-14])
+		fmt.Println("File guru didownload pada tanggal  : ", guru[len(guru)-24:len(guru)-14])
+		fmt.Println("File tendik didownload pada tanggal : ", tendik[len(tendik)-24:len(tendik)-14])
 
-	println("==============================================\n")
-	cd.Proses()
-	db.Proses(namadb)
-	lib.CopyFile(namadb)
+		println("==============================================")
+		cd.Proses()
+		db.Proses(namadb)
+		lib.CopyFile(namadb)
 
-	println("==============================================\n")
-	fmt.Println("Silahkan upload database ", namadb, "pada Skolidbot")
-	fmt.Println("Lokasi database berada pada Desktop/DapoSniff/", namadb)
-	fmt.Println("Tekan tombol <Enter> untuk mengakhiri proses...")
-	fmt.Scanln()
-	os.Exit(0)
+		println("==============================================\n")
+		fmt.Println("Silahkan upload database ", namadb, "pada Skolidbot")
+		fmt.Println("Lokasi database berada pada Desktop/DapoSniff/", namadb)
+		fmt.Println("Tekan tombol <Enter> untuk mengakhiri proses...")
+		fmt.Scanln()
+		os.Exit(0)
+	} else {
+		lib.ArtMod()
+		fmt.Println("Tekan tombol <Enter> untuk keluar...")
+		fmt.Scanln()
+		os.Exit(0)
+	}
+
 }
