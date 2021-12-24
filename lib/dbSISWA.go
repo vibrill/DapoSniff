@@ -91,9 +91,7 @@ var (
 	PDKurikulumIDStr        string
 )
 
-func createTableSiswa(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTableSiswa(db *sql.DB) {
 	text := `CREATE TABLE SISWAWEB (
 		"RegistrasiID"          TEXT,
 		"JenisPendaftaranID"    TEXT,
@@ -131,13 +129,11 @@ func createTableSiswa(namadb string) {
 		"KurikulumID"           TEXT,
 		"KurikulumIDStr"        TEXT);`
 
-	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("keempat" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel SISWAWEB telah dibuat")
 }
 
 func formatext(a string) (b string) {
@@ -145,7 +141,7 @@ func formatext(a string) (b string) {
 	return b
 }
 
-func JsonSiswatoDB(namadb, js string) {
+func JsonSiswatoDB(db *sql.DB, js string) {
 	//init json load
 	var jsonString = js
 	var jsonData = []byte(jsonString)
@@ -155,10 +151,6 @@ func JsonSiswatoDB(namadb, js string) {
 		log.Fatalln(err.Error())
 	}
 	var text string
-
-	//init db access
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Open the created SQLite File
-	defer db.Close()                          // Defer Closing the database
 
 	count := data.Results
 	for i := 0; i < count; i++ { //data setiap row

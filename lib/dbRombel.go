@@ -91,9 +91,9 @@ var (
 	StatusDiKurikulumStr string
 )
 
-func createTabelRombel(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTabelRombel(db *sql.DB) {
+	/* db, _ := sql.Open("sqlite3", "./"+namadb) // Op
+	defer db.Close()                          // Defer Closing the database */
 	text := `CREATE TABLE ` + namaTabelRombel + ` (
 		"RombonganBelajarID"  TEXT, 
 		"Nama"                TEXT, 
@@ -115,12 +115,11 @@ func createTabelRombel(namadb string) {
 		log.Fatal("create Table " + namaTabelRombel + " ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel " + namaTabelRombel + " telah dibuat")
 }
 
-func createTabelAnggotaRombel(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTabelAnggotaRombel(db *sql.DB) {
+	/* db, _ := sql.Open("sqlite3", "./"+namadb) // Op
+	defer db.Close()                          // Defer Closing the database */
 	text := `CREATE TABLE ` + namaTabelAnggotaRombel + ` (
 		"Nama"                TEXT,
 		"PtkIDStr"            TEXT,
@@ -135,12 +134,11 @@ func createTabelAnggotaRombel(namadb string) {
 		log.Fatal("create Table " + namaTabelAnggotaRombel + " ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel " + namaTabelAnggotaRombel + " telah dibuat")
 }
 
-func createTablePembelajaran(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTablePembelajaran(db *sql.DB) {
+	/* db, _ := sql.Open("sqlite3", "./"+namadb) // Op
+	defer db.Close()                          // Defer Closing the database */
 	text := `CREATE TABLE ` + namaTabelPembelajaran + ` (
 		"Nama"                TEXT,
 		"PtkIDStr"            TEXT,
@@ -160,10 +158,9 @@ func createTablePembelajaran(namadb string) {
 		log.Fatal("create  " + namaTabelPembelajaran + " ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel " + namaTabelPembelajaran + " telah dibuat")
 }
 
-func JsonRombelToDB(namadb, js string) {
+func JsonRombelToDB(db *sql.DB, js string) {
 	//init json load
 	var jsonString = js
 	var jsonData = []byte(jsonString)
@@ -172,10 +169,6 @@ func JsonRombelToDB(namadb, js string) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-
-	//init db access
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Open the created SQLite File
-	defer db.Close()                          // Defer Closing the database
 
 	countRombel := data.Results
 	//println(countPTK, "PTK ditemukan")

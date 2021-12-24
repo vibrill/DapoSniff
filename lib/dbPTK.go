@@ -119,9 +119,7 @@ var (
 	ptkPangkatGolonganIDStr string
 )
 
-func createTableRiwayatKepangkatanPTK(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTableRiwayatKepangkatanPTK(db *sql.DB) {
 	text := `CREATE TABLE ` + namaTabelRWPangkat + ` (
 		"Nama"				TEXT,
 		"RiwayatKepangkatanID" TEXT,
@@ -132,18 +130,14 @@ func createTableRiwayatKepangkatanPTK(namadb string) {
 		"MasaKerjaGolBulan"    TEXT,
 		"PangkatGolonganIDStr" TEXT
 	);`
-	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("create Table RWPANGKATWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel RWPANGKATWEB telah dibuat")
 }
 
-func createTableRiwayatPendidikanPTK(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTableRiwayatPendidikanPTK(db *sql.DB) {
 	text := `CREATE TABLE ` + namaTabelRWPendidikan + ` (
 		"Nama"				TEXT,
 		"RiwayatPendidikanFormalID" TEXT,
@@ -162,18 +156,14 @@ func createTableRiwayatPendidikanPTK(namadb string) {
 		"JenjangPendidikanIDStr"    TEXT,
 		"GelarAkademikIDStr"        TEXT);`
 
-	//fmt.Println(text)
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("create Table RWPENDIDIKANWEB ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel RWPENDIDIKANWEB telah dibuat")
 }
 
-func createTablePTK(namadb string) {
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Op
-	defer db.Close()                          // Defer Closing the database
+func createTablePTK(db *sql.DB) {
 	text := `CREATE TABLE ` + namaTabelPTK + ` (
 		"TahunAjaranID"             TEXT,
 		"TerdaftarID"               TEXT,
@@ -196,16 +186,15 @@ func createTablePTK(namadb string) {
 		"PendidikanTerakhir"        TEXT,
 		"BidangStudiTerakhir"       TEXT,
 		"PangkatGolonganTerakhir"   TEXT);`
-	//fmt.Println(text)
+
 	statement, err := db.Prepare(text) // Prepare SQL Statement
 	if err != nil {
 		log.Fatal("createTablePTK ERR :" + err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
-	//fmt.Println("Tabel PTKWEB telah dibuat")
 }
 
-func JsonPTKtoDB(namadb, js string) {
+func JsonPTKtoDB(db *sql.DB, js string) {
 	//init json load
 	var jsonString = js
 	var jsonData = []byte(jsonString)
@@ -215,13 +204,7 @@ func JsonPTKtoDB(namadb, js string) {
 		log.Fatalln(err.Error())
 	}
 
-	//init db access
-	db, _ := sql.Open("sqlite3", "./"+namadb) // Open the created SQLite File
-	defer db.Close()                          // Defer Closing the database
-
 	countPTK := data.Results
-	//println(countPTK, "PTK ditemukan")
-
 	for i := 0; i < countPTK; i++ {
 		//data setiap row
 		//insert data PTK WEB
